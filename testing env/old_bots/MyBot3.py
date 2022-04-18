@@ -1,4 +1,3 @@
-from re import S
 from turtle import position
 import hlt
 from hlt import constants
@@ -14,8 +13,6 @@ game = hlt.Game()
 directions = [ Direction.North, Direction.South, Direction.East, Direction.West, Direction.Still ]
 
 ship_states = {}
-
-ship_standstill_time = {}
 
 # As soon as you call "ready" function below, the 2 second per turn timer will start.
 game.ready("MyPythonBot")
@@ -39,9 +36,6 @@ while True:
         if ship.id not in ship_states:
             ship_states[ship.id] = "collecting"
 
-        if ship.id not in ship_standstill_time:
-            ship_standstill_time[ship.id] = 0
-
         move_options = ship.position.get_surrounding_cardinals() + [ship.position]
 
         move_dict = {}
@@ -56,15 +50,10 @@ while True:
             if move_dict[direction] not in position_choices:
                 halite_dict[direction] = halite_amount
 
-        logging.info(ship_standstill_time)
+        if game.turn_number%10 == 0:
+            logging.info(move_options);
 
-        if ship_states[ship.id] == "panic":
-            command_queue.append(ship.move(random.choice([ Direction.North, Direction.South, Direction.East, Direction.West ])))
-            ship_standstill_time[ship.id] -= 1
-            if ship_standstill_time[ship.id] == 0:
-                ship_states[ship.id] = "collecting"
-
-        elif ship_states[ship.id] == "depositing":
+        if ship_states[ship.id] == "depositing":
             choice = game_map.naive_navigate(ship, me.shipyard.position)
             position_choices.append(move_dict[choice])
             command_queue.append(ship.move(choice))
@@ -76,13 +65,8 @@ while True:
             position_choices.append(move_dict[choice])
             choice = game_map.naive_navigate(ship, move_dict[choice])
             command_queue.append(ship.move(choice))
-            if choice == Direction.Still:
-                ship_standstill_time[ship.id] += 1
-            else:
-                ship_standstill_time[ship.id] = 0
-            if ship_standstill_time[ship.id] >= 7:
-                ship_states[ship.id] = "panic"
-            elif ship.halite_amount > constants.MAX_HALITE / 1.5:
+
+            if ship.halite_amount > constants.MAX_HALITE / 2:
                 ship_states[ship.id] = "depositing"
 
     if game.turn_number <= 300 and me.halite_amount >= constants.SHIP_COST and not game_map[me.shipyard].is_occupied:
