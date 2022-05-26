@@ -20,6 +20,9 @@ SAVE_THRESHOLD = 4100
 MAX_SHIPS = 1
 
 direction_order = [Direction.North, Direction.South, Direction.East, Direction.West, Direction.Still]
+
+training_data = []
+
 game = hlt.Game()  # game object
 # Initializes the game
 game.ready("LearningBot")
@@ -49,9 +52,6 @@ while True:
 
 
     for ship in me.get_ships():
-
-        logging.info(f"{ship.position}, {ship.position+Position(-3,3)}")
-        logging.info(f"{game_map[ship.position+Position(-3,3)]}")
         
         size = 16
 
@@ -92,13 +92,11 @@ while True:
                 row.append(amounts)
             surroundings.append(row)
             
-        if game.turn_number == 5:
-            with open("test.txt", "w") as f:
-                f.write(str(surroundings))
+        choice = secrets.choice(range(len(direction_order)))
 
-        #np.save(f"game_play/{game.turn_number}.npy", surroundings)
+        training_data.append([surroundings,choice])
 
-        command_queue.append(ship.move(secrets.choice(direction_order)))
+        command_queue.append(ship.move(direction_order[choice]))
 
     # ship costs 1000, dont make a ship on a ship or they both sink
     if len(me.get_ships()) < MAX_SHIPS:
@@ -109,7 +107,7 @@ while True:
         if me.halite_amount >= SAVE_THRESHOLD:
             timed = int(time.time()*1000)
             hal = me.halite_amount
-            np.save(f"training_data/{hal}-{timed}.npy", surroundings)
+            np.save(f"training_data/{hal}-{timed}.npy", training_data)
 
     # Send your moves back to the game environment, ending this turn.
     game.end_turn(command_queue)

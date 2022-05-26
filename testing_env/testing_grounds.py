@@ -1,8 +1,17 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
+import os
 
-for i in range(2,3):
-    d = np.load(f"D:/Git/ME-test-repo/WTUM_06_2022/testing_env/game_play/{i}.npy")
-    print(d)
-    cv2.imshow("",d)
-    cv2.waitKey(100000000000000)
+all_files = os.listdir('training_data')
+
+print(len(all_files))
+
+halite_amounts = []
+
+for f in all_files:
+    halite_amount = f.split("-")[0]
+    halite_amounts.append(halite_amount)
+
+plt.hist(halite_amounts, 5)
+plt.show()
