@@ -11,9 +11,10 @@ import os
 import sys
 stderr = sys.stderr
 sys.stderr = open(os.devnull, "w")
+stdout = sys.stdout
+sys.stdout = open(os.devnull, "w")
 import tensorflow
 import keras
-sys.stderr = stderr
 
 import numpy as np
 
@@ -32,11 +33,14 @@ direction_order = [Direction.North, Direction.South, Direction.East, Direction.W
 training_data = []
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-gpu_options = tensorflow.GPUOptions(per_process_gpu_memory_fraction=0.05)
-sess = tensorflow.Session(config = tensorflow.ConfigProto(gpu_options=gpu_options))
+gpu_options = tensorflow.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.05)
+sess = tensorflow.compat.v1.Session(config = tensorflow.compat.v1.ConfigProto(gpu_options=gpu_options))
 
-model = keras.models.load_model("model/phase1")
+model = keras.models.load_model("models/phase1")
 RANDOM_CHANCE = secrets.choice([0.15, 0.25, 0.35])
+
+sys.stderr = stderr
+sys.stdout = stdout
 
 game = hlt.Game()  # game object
 # Initializes the game
@@ -106,6 +110,11 @@ while True:
 
                 row.append(amounts)
             surroundings.append(row)
+
+        stderr = sys.stderr
+        sys.stderr = open(os.devnull, "w")
+        stdout = sys.stdout
+        sys.stdout = open(os.devnull, "w")
             
         if secrets.choice(range(int(1/RANDOM_CHANCE))) == 1:
             choice = secrets.choice(range(len(direction_order)))
@@ -117,6 +126,9 @@ while True:
         training_data.append([surroundings,choice])
 
         command_queue.append(ship.move(direction_order[choice]))
+
+        sys.stderr = stderr
+        sys.stdout = stdout
 
     # ship costs 1000, dont make a ship on a ship or they both sink
     if len(me.get_ships()) < MAX_SHIPS:
