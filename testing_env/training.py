@@ -20,7 +20,7 @@ PREV_MODEL_NAME = ""
 VALIDATION_GAME_COUNT = 50
 
 NAME = f"phase1-{int(time.time())}"
-EPOCHS = 1
+EPOCHS = 3
 
 TRAINING_DATA_DIR = 'training_data'
 
