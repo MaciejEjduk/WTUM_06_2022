@@ -15,9 +15,9 @@ LOAD_TRAIN_FILES = False
 LOAD_PREV_MODEL = False
 HALITE_THRESHOLD = 4100
 
-TRAINING_CHUNK_SIZE = 220
+TRAINING_CHUNK_SIZE = 50
 PREV_MODEL_NAME = ""
-VALIDATION_GAME_COUNT = 50
+VALIDATION_GAME_COUNT = 25
 
 NAME = f"phase1-{int(time.time())}"
 EPOCHS = 3
@@ -48,8 +48,8 @@ else:
             test_x.append(np.array(d[0]))
             test_y.append(d[1])
 
-    np.save("test_x.npy", test_x)
-    np.save("test_y.npy", test_y)
+    # np.save("test_x_1.npy", test_x)
+    # np.save("test_y_1.npy", test_y)
 
 test_x = np.array(test_x)
 
@@ -155,8 +155,8 @@ for e in range(EPOCHS):
             test_x = np.array(test_x)
             test_y = np.array(test_y)
 
-            np.save(f"X-{idx}.npy", X)
-            np.save(f"Y-{idx}.npy", Y)
+            #np.save(f"X-{idx}.npy", X)
+            #np.save(f"Y-{idx}.npy", Y)
 
-        model.fit(X, Y, batch_size = 32, epochs=1, validation_data=(test_x, test_y), callbacks=[tensorboard])
+        model.fit(X, Y, batch_size = 32, epochs=3, validation_data=(test_x, test_y), callbacks=[tensorboard])
         model.save(f"models/{NAME}")
