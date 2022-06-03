@@ -18,7 +18,7 @@ ship_states = {}
 ship_standstill_time = {}
 
 # As soon as you call "ready" function below, the 2 second per turn timer will start.
-game.ready("MyPythonBot")
+game.ready("Panicing")
 
 logging.info("Successfully created bot! My Player ID is {}.".format(game.my_id))
 

@@ -55,7 +55,7 @@ while goodtup[0] != -1:
 
             
 # Respond with your name.
-game.ready("MyPythonBot")
+game.ready("Aggro")
 shipsToReturn = []
 threshold = 975
 # vary this threshold with regard to halite available on map

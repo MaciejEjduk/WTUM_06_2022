@@ -31,7 +31,7 @@ while True:
         moves = ship.position.get_surrounding_cardinals()
 
         if game.turn_number == 10:
-            logging.info(moves);
+            logging.info(moves)
 
         if game_map[ship.position].halite_amount < constants.MAX_HALITE / 10 or ship.is_full:
             command_queue.append(

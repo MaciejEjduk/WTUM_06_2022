@@ -48,7 +48,7 @@ while True:
                 halite_dict[direction] = halite_amount
 
         if game.turn_number%10 == 0:
-            logging.info(move_options);
+            logging.info(move_options)
 
         if game_map[ship.position].halite_amount < constants.MAX_HALITE / 10 or ship.is_full:
             choice = max(halite_dict, key=halite_dict.get)

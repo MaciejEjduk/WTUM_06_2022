@@ -29,8 +29,6 @@ my_max_ships = 10
 my_halite_check = 10
 spot_iters_stop = 3
 
-max_halite = 0
-
 # custom functions
 
 training_data = []
@@ -247,15 +245,10 @@ refresh_spots(game.game_map, game.me)
 
 max_turns = hlt.constants.MAX_TURNS
 
-for y_position in range(32):
-    for x_position in range(32):
-        max_halite+=game.game_map._cells[y_position][x_position].halite_amount
-
-
 #pre-processing
 
 # As soon as you call "ready" function below, the 2 second per turn timer will start.
-game.ready("MyPythonBot")
+game.ready("Maheswaran")
 
 logging.info("Successfully created bot! My Player ID is {}.".format(game.my_id))
 
@@ -362,47 +355,6 @@ while True:
             else:
                 command_queue.append(ship.move(next_move))
 
-        size = 16
-        surroundings = []
-
-        for y in range(-1*size, size+1):
-            row = []
-            for x in range(-1*size, size+1):
-                current_cell = game_map[ship.position + Position(x, y)]
-
-                if current_cell.position in dropoff_positions:
-                    drop_friend_foe = 1
-                else:
-                    drop_friend_foe = -1
-
-                if current_cell.position in ship_positions:
-                    ship_friend_foe = 1
-                else:
-                    ship_friend_foe = -1
-
-                halite_in_cell = round(current_cell.halite_amount / constants.MAX_HALITE, 2)
-
-                ship_in_cell = current_cell.ship
-
-                dropoff_in_cell = current_cell.structure
-
-                if halite_in_cell is None:
-                    halite_in_cell = 0
-                if ship_in_cell is None:
-                    ship_in_cell = 0
-                else:
-                    ship_in_cell = round(ship_friend_foe * (ship_in_cell.halite_amount / constants.MAX_HALITE), 2)
-                if dropoff_in_cell is None:
-                    dropoff_in_cell = 0
-                else:
-                    dropoff_in_cell = drop_friend_foe
-
-                amounts = (halite_in_cell, ship_in_cell, dropoff_in_cell)
-
-                row.append(amounts)
-            surroundings.append(row)
-        training_data.append([surroundings,direction_order.index(next_move)])
-
     # spawn ships
     # - atleast two
     # - only when shipyard is empty
@@ -412,11 +364,5 @@ while True:
 
     ):
         command_queue.append(me.shipyard.spawn())
-
-    if game.turn_number == 390:
-        if me.halite_amount >= max_halite/4:
-            timed = int(time.time()*1000)
-            hal = me.halite_amount
-            np.save(f"training_data/{hal}-{timed}.npy", training_data)
 
     game.end_turn(command_queue)
