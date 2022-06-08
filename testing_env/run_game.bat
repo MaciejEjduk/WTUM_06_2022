@@ -1,1 +1,1 @@
-halite.exe --replay-directory replays/ -vvv --width 32 --height 32 --turn-limit 50 "python MyBot-ML.py" "python MyBot-ML.py"
+halite.exe --replay-directory replays/ -vvv --width 32 --height 32 "python MyBot-ML.py" "python MyBot-ML.py"
