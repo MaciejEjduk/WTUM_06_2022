@@ -8,7 +8,7 @@ https://www.kaggle.com/c/halite/overview/getting-started
 
 https://halite.io
 
-## struktura projektu
+## Struktura projektu
 
 W plikach projektu istnieją dwa główne katalogi. Pierwszy - starter kit, to kompletna paczka pozwalająca na rozpoczęcie pracy z grą. Ze względu na fakt, że gra skończyła się, zanim projekt się rozpoczął, to poszczególne pliki były zbierane z różnych miejsc. Paczka pozwala na tworzenie projektów w Pythonie.
 
