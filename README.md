@@ -35,8 +35,11 @@ Niestety ze względu na problemy w zbieraniu paczki początkowej aplikacja halit
 Parametry, które można zmodyfikować to:
 
 -s -> zmienia seed generowanej mapy z losowego na wskazany
+
 --no-logs -> nie zapisuje logów w trakcie i po grze (wskazane przy generowaniu wielu rozgrywek)
+
 --no-replay -> nie zapisuje nagrań rozgrywek (wskazane przy generowaniu wielu rozgrywek)
+
 --no-timeout -> gra nie kończy się automatycznie, jeżeli tura któregoś z graczy zajmie dłużej niż wskazany czas 200ms
 
 Pozostałe parametry albo nie są odczytywane przy uruchomieniu, albo nie mają znaczenia przy uruchamianiu rozgrywek
